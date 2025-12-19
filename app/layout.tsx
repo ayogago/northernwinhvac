@@ -3,7 +3,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://northernwindhvac.com';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.northernwindhvac.com';
 
 export const viewport: Viewport = {
   width: 'device-width',
