@@ -1,8 +1,18 @@
 import Link from 'next/link';
+import type { Metadata } from 'next';
 
-export const metadata = {
-  title: 'About Us - NorthernWindHVAC | Your Trusted HVAC Partner',
-  description: 'Learn about NorthernWindHVAC, a family-owned HVAC company serving Glendale, Burbank, Pasadena, and surrounding areas for over 15 years.',
+export const metadata: Metadata = {
+  title: 'About Us - 15+ Years of Trusted HVAC Service in Los Angeles',
+  description: 'NorthernWindHVAC: Family-owned HVAC company serving Greater Los Angeles since 2010. Licensed, insured, EPA certified technicians. 500+ satisfied customers. Learn our story!',
+  keywords: ['HVAC company Los Angeles', 'family owned HVAC', 'trusted HVAC contractor', 'licensed HVAC', 'certified HVAC technicians'],
+  openGraph: {
+    title: 'About NorthernWindHVAC - Your Trusted HVAC Partner',
+    description: 'Family-owned HVAC company with 15+ years experience serving Greater Los Angeles. Licensed, insured, and committed to your comfort.',
+    type: 'website',
+  },
+  alternates: {
+    canonical: '/about',
+  },
 };
 
 export default function AboutPage() {

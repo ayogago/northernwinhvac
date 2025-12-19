@@ -1,8 +1,18 @@
 import Link from 'next/link';
+import type { Metadata } from 'next';
 
-export const metadata = {
-  title: 'Service Areas - NorthernWindHVAC | Glendale, Burbank, Pasadena HVAC',
-  description: 'Professional HVAC services in Glendale, Burbank, Tujunga, Pasadena, and surrounding areas. Fast, reliable heating and cooling solutions.',
+export const metadata: Metadata = {
+  title: 'Service Areas - HVAC Services in Los Angeles, Glendale, Burbank & More',
+  description: 'NorthernWindHVAC serves 50+ cities in Greater Los Angeles: Glendale, Burbank, Pasadena, San Fernando Valley & more. Same-day service, 30-mile radius. Call (818) 555-HVAC!',
+  keywords: ['HVAC Glendale', 'HVAC Burbank', 'HVAC Pasadena', 'HVAC Los Angeles', 'San Fernando Valley HVAC', 'HVAC near me', 'local HVAC service'],
+  openGraph: {
+    title: 'HVAC Service Areas | NorthernWindHVAC',
+    description: 'Professional HVAC services in 50+ cities across Greater Los Angeles. Fast response times, same-day service available.',
+    type: 'website',
+  },
+  alternates: {
+    canonical: '/serving-areas',
+  },
 };
 
 export default function ServingAreasPage() {
