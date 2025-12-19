@@ -1,8 +1,18 @@
 import Link from 'next/link';
+import type { Metadata } from 'next';
 
-export const metadata = {
-  title: 'HVAC Services - NorthernWindHVAC | AC, Heating, Maintenance',
-  description: 'Complete HVAC services including AC installation & repair, heating systems, maintenance plans, and indoor air quality solutions in Glendale, Burbank, Pasadena.',
+export const metadata: Metadata = {
+  title: 'HVAC Services - AC Repair, Heating Installation & Maintenance',
+  description: 'Professional HVAC services in Los Angeles: AC installation & repair, heating systems, furnace maintenance, indoor air quality. 24/7 emergency service. Free estimates. Call (818) 555-HVAC!',
+  keywords: ['AC repair Los Angeles', 'heating installation', 'HVAC maintenance', 'furnace repair', 'air conditioning service', 'emergency HVAC', 'indoor air quality'],
+  openGraph: {
+    title: 'Professional HVAC Services | NorthernWindHVAC',
+    description: 'Complete heating and cooling services for homes and businesses. AC repair, heating installation, maintenance plans, and 24/7 emergency service.',
+    type: 'website',
+  },
+  alternates: {
+    canonical: '/services',
+  },
 };
 
 export default function ServicesPage() {

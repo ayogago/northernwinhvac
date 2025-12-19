@@ -22,8 +22,35 @@ const urgencyLabels: Record<string, string> = {
   'flexible': 'Flexible',
 };
 
+// Sanitize input to prevent XSS
+function sanitizeInput(input: string): string {
+  if (!input) return '';
+  return input
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#x27;')
+    .trim();
+}
+
+// Validate phone number format
+function isValidPhone(phone: string): boolean {
+  const phoneRegex = /^[\d\s\-\(\)\+\.]+$/;
+  return phoneRegex.test(phone) && phone.replace(/\D/g, '').length >= 10;
+}
+
 export async function POST(request: NextRequest) {
   try {
+    // Check if SMTP is configured
+    if (!process.env.SMTP_PASSWORD) {
+      console.error('SMTP_PASSWORD environment variable is not set');
+      return NextResponse.json(
+        { error: 'Email service is not configured. Please call us directly at (818) 555-HVAC.' },
+        { status: 503 }
+      );
+    }
+
     const body = await request.json();
     const { name, email, phone, address, serviceType, urgency, message } = body;
 
@@ -39,36 +66,73 @@ export async function POST(request: NextRequest) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       return NextResponse.json(
-        { error: 'Invalid email format' },
+        { error: 'Please enter a valid email address' },
         { status: 400 }
       );
     }
 
+    // Validate phone format
+    if (!isValidPhone(phone)) {
+      return NextResponse.json(
+        { error: 'Please enter a valid phone number' },
+        { status: 400 }
+      );
+    }
+
+    // Sanitize all inputs
+    const sanitizedData = {
+      name: sanitizeInput(name),
+      email: sanitizeInput(email),
+      phone: sanitizeInput(phone),
+      address: sanitizeInput(address || ''),
+      serviceType: sanitizeInput(serviceType || ''),
+      urgency: sanitizeInput(urgency || ''),
+      message: sanitizeInput(message || ''),
+    };
+
     // Create transporter for Google Workspace
+    const smtpUser = process.env.SMTP_USER || 'info@northernwindhvac.com';
+
     const transporter = nodemailer.createTransport({
-      host: 'smtp.gmail.com',
-      port: 587,
-      secure: false, // Use TLS
+      host: process.env.SMTP_HOST || 'smtp.gmail.com',
+      port: parseInt(process.env.SMTP_PORT || '587'),
+      secure: process.env.SMTP_SECURE === 'true', // true for 465, false for other ports
       auth: {
-        user: process.env.SMTP_USER || 'info@northernwindhvac.com',
-        pass: process.env.SMTP_PASSWORD, // App-specific password from Google Workspace
+        user: smtpUser,
+        pass: process.env.SMTP_PASSWORD,
+      },
+      tls: {
+        rejectUnauthorized: false, // Allow self-signed certificates
       },
     });
 
-    // Format the email content
-    const serviceLabel = serviceTypeLabels[serviceType] || serviceType || 'Not specified';
-    const urgencyLabel = urgencyLabels[urgency] || urgency || 'Not specified';
+    // Verify transporter connection
+    try {
+      await transporter.verify();
+    } catch (verifyError) {
+      console.error('SMTP connection verification failed:', verifyError);
+      return NextResponse.json(
+        { error: 'Email service is temporarily unavailable. Please call us at (818) 555-HVAC.' },
+        { status: 503 }
+      );
+    }
 
-    const emailSubject = urgency === 'emergency'
-      ? `[URGENT] New Service Request from ${name}`
-      : `New Service Request from ${name}`;
+    // Format the email content
+    const serviceLabel = serviceTypeLabels[sanitizedData.serviceType] || sanitizedData.serviceType || 'Not specified';
+    const urgencyLabel = urgencyLabels[sanitizedData.urgency] || sanitizedData.urgency || 'Not specified';
+
+    const emailSubject = sanitizedData.urgency === 'emergency'
+      ? `[URGENT] New Service Request from ${sanitizedData.name}`
+      : `New Service Request from ${sanitizedData.name}`;
 
     const htmlContent = `
       <!DOCTYPE html>
       <html>
       <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <style>
-          body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+          body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0; }
           .container { max-width: 600px; margin: 0 auto; padding: 20px; }
           .header { background: #1e40af; color: white; padding: 20px; text-align: center; border-radius: 8px 8px 0 0; }
           .content { background: #f9fafb; padding: 20px; border: 1px solid #e5e7eb; }
@@ -82,31 +146,31 @@ export async function POST(request: NextRequest) {
       <body>
         <div class="container">
           <div class="header">
-            <h1>New Service Request</h1>
-            <p>NorthernWindHVAC Contact Form Submission</p>
+            <h1 style="margin: 0;">New Service Request</h1>
+            <p style="margin: 10px 0 0 0;">NorthernWindHVAC Contact Form Submission</p>
           </div>
           <div class="content">
-            ${urgency === 'emergency' ? '<div class="urgent"><strong>URGENT REQUEST - Customer needs immediate assistance!</strong></div>' : ''}
+            ${sanitizedData.urgency === 'emergency' ? '<div class="urgent"><strong>URGENT REQUEST - Customer needs immediate assistance!</strong></div>' : ''}
 
             <div class="field">
               <div class="label">Customer Name:</div>
-              <div class="value">${name}</div>
+              <div class="value">${sanitizedData.name}</div>
             </div>
 
             <div class="field">
               <div class="label">Email:</div>
-              <div class="value"><a href="mailto:${email}">${email}</a></div>
+              <div class="value"><a href="mailto:${sanitizedData.email}">${sanitizedData.email}</a></div>
             </div>
 
             <div class="field">
               <div class="label">Phone:</div>
-              <div class="value"><a href="tel:${phone}">${phone}</a></div>
+              <div class="value"><a href="tel:${sanitizedData.phone.replace(/\D/g, '')}">${sanitizedData.phone}</a></div>
             </div>
 
-            ${address ? `
+            ${sanitizedData.address ? `
             <div class="field">
               <div class="label">Service Address:</div>
-              <div class="value">${address}</div>
+              <div class="value">${sanitizedData.address}</div>
             </div>
             ` : ''}
 
@@ -120,16 +184,16 @@ export async function POST(request: NextRequest) {
               <div class="value">${urgencyLabel}</div>
             </div>
 
-            ${message ? `
+            ${sanitizedData.message ? `
             <div class="field">
               <div class="label">Additional Details:</div>
-              <div class="value">${message}</div>
+              <div class="value">${sanitizedData.message.replace(/\n/g, '<br>')}</div>
             </div>
             ` : ''}
           </div>
           <div class="footer">
-            <p>This email was sent from the NorthernWindHVAC website contact form.</p>
-            <p>Reply directly to this email to respond to the customer.</p>
+            <p style="margin: 0;">This email was sent from the NorthernWindHVAC website contact form.</p>
+            <p style="margin: 10px 0 0 0;">Reply directly to this email to respond to the customer.</p>
           </div>
         </div>
       </body>
@@ -139,37 +203,39 @@ export async function POST(request: NextRequest) {
     const textContent = `
 New Service Request - NorthernWindHVAC
 
-${urgency === 'emergency' ? '*** URGENT REQUEST - Customer needs immediate assistance! ***\n' : ''}
-Customer Name: ${name}
-Email: ${email}
-Phone: ${phone}
-${address ? `Service Address: ${address}` : ''}
+${sanitizedData.urgency === 'emergency' ? '*** URGENT REQUEST - Customer needs immediate assistance! ***\n' : ''}
+Customer Name: ${sanitizedData.name}
+Email: ${sanitizedData.email}
+Phone: ${sanitizedData.phone}
+${sanitizedData.address ? `Service Address: ${sanitizedData.address}` : ''}
 Service Needed: ${serviceLabel}
 Urgency: ${urgencyLabel}
-${message ? `\nAdditional Details:\n${message}` : ''}
+${sanitizedData.message ? `\nAdditional Details:\n${sanitizedData.message}` : ''}
 
 ---
 This email was sent from the NorthernWindHVAC website contact form.
     `.trim();
 
-    // Send email
+    // Send email to business
     await transporter.sendMail({
-      from: `"NorthernWindHVAC Website" <${process.env.SMTP_USER || 'info@northernwindhvac.com'}>`,
-      to: 'info@northernwindhvac.com',
-      replyTo: email,
+      from: `"NorthernWindHVAC Website" <${smtpUser}>`,
+      to: process.env.CONTACT_EMAIL || 'info@northernwindhvac.com',
+      replyTo: sanitizedData.email,
       subject: emailSubject,
       text: textContent,
       html: htmlContent,
     });
 
-    // Optionally send confirmation email to customer
+    // Send confirmation email to customer
     if (process.env.SEND_CONFIRMATION_EMAIL === 'true') {
       const confirmationHtml = `
         <!DOCTYPE html>
         <html>
         <head>
+          <meta charset="utf-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
           <style>
-            body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
+            body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; margin: 0; padding: 0; }
             .container { max-width: 600px; margin: 0 auto; padding: 20px; }
             .header { background: #1e40af; color: white; padding: 20px; text-align: center; border-radius: 8px 8px 0 0; }
             .content { background: #f9fafb; padding: 20px; border: 1px solid #e5e7eb; }
@@ -179,10 +245,10 @@ This email was sent from the NorthernWindHVAC website contact form.
         <body>
           <div class="container">
             <div class="header">
-              <h1>Thank You for Contacting Us!</h1>
+              <h1 style="margin: 0;">Thank You for Contacting Us!</h1>
             </div>
             <div class="content">
-              <p>Dear ${name},</p>
+              <p>Dear ${sanitizedData.name},</p>
               <p>Thank you for reaching out to NorthernWindHVAC! We have received your service request and will get back to you shortly.</p>
               <p><strong>What happens next?</strong></p>
               <ul>
@@ -194,29 +260,42 @@ This email was sent from the NorthernWindHVAC website contact form.
               <p>Best regards,<br>The NorthernWindHVAC Team</p>
             </div>
             <div class="footer">
-              <p>NorthernWindHVAC | (818) 555-HVAC | info@northernwindhvac.com</p>
+              <p style="margin: 0;">NorthernWindHVAC | (818) 555-HVAC | info@northernwindhvac.com</p>
             </div>
           </div>
         </body>
         </html>
       `;
 
-      await transporter.sendMail({
-        from: `"NorthernWindHVAC" <${process.env.SMTP_USER || 'info@northernwindhvac.com'}>`,
-        to: email,
-        subject: 'Thank you for contacting NorthernWindHVAC!',
-        html: confirmationHtml,
-      });
+      try {
+        await transporter.sendMail({
+          from: `"NorthernWindHVAC" <${smtpUser}>`,
+          to: sanitizedData.email,
+          subject: 'Thank you for contacting NorthernWindHVAC!',
+          html: confirmationHtml,
+        });
+      } catch (confirmError) {
+        // Don't fail the request if confirmation email fails
+        console.error('Failed to send confirmation email:', confirmError);
+      }
     }
 
     return NextResponse.json(
-      { message: 'Your message has been sent successfully!' },
+      { message: 'Your message has been sent successfully! We will contact you shortly.' },
       { status: 200 }
     );
   } catch (error) {
     console.error('Error sending email:', error);
+
+    // Provide more specific error messages
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+
+    if (errorMessage.includes('EAUTH') || errorMessage.includes('authentication')) {
+      console.error('SMTP Authentication failed. Please check credentials.');
+    }
+
     return NextResponse.json(
-      { error: 'Failed to send message. Please try again or call us directly.' },
+      { error: 'Failed to send message. Please try again or call us directly at (818) 555-HVAC.' },
       { status: 500 }
     );
   }
