@@ -51,6 +51,28 @@ export default function ServingAreasPage() {
         'Comprehensive service plans',
       ],
     },
+    {
+      name: 'Greater Los Angeles Area',
+      description: 'Serving the entire Greater Los Angeles metropolitan area with professional HVAC services. From Downtown LA to the San Fernando Valley, we\'ve got you covered.',
+      zipCodes: '90001-90089, 90091-90099, 90101-90103, 90174, 90185',
+      highlights: [
+        'Metro-wide coverage',
+        'Commercial & residential',
+        'Multi-unit specialists',
+        'Rapid response teams',
+      ],
+    },
+    {
+      name: 'San Fernando Valley',
+      description: 'Complete HVAC coverage for the San Fernando Valley. From Sherman Oaks to Northridge, we provide reliable heating and cooling solutions.',
+      zipCodes: '91301, 91302, 91303, 91304, 91306, 91307, 91311, 91316, 91324, 91325, 91326, 91330, 91331, 91335, 91340, 91342, 91343, 91344, 91345, 91352, 91356, 91364, 91367, 91401, 91402, 91403, 91405, 91406, 91411, 91423, 91436',
+      highlights: [
+        'Valley-wide service',
+        'Heat wave specialists',
+        'Energy-saving solutions',
+        'Same-day availability',
+      ],
+    },
   ];
 
   const surroundingAreas = [
@@ -66,6 +88,35 @@ export default function ServingAreasPage() {
     'Toluca Lake',
     'Studio City',
     'North Hollywood',
+    'Sherman Oaks',
+    'Encino',
+    'Van Nuys',
+    'Northridge',
+    'Reseda',
+    'Woodland Hills',
+    'Canoga Park',
+    'Chatsworth',
+    'Granada Hills',
+    'Sylmar',
+    'Pacoima',
+    'Arleta',
+    'Sun Valley',
+    'Valley Village',
+    'Hollywood',
+    'Los Feliz',
+    'Silver Lake',
+    'Echo Park',
+    'Highland Park',
+    'Glassell Park',
+    'Mount Washington',
+    'Arcadia',
+    'Monrovia',
+    'Duarte',
+    'Azusa',
+    'West Covina',
+    'Covina',
+    'Pomona',
+    'Claremont',
   ];
 
   return (
@@ -257,11 +308,11 @@ export default function ServingAreasPage() {
                 <h3 className="text-2xl font-bold text-gray-900 mb-6">Service Area Coverage</h3>
                 <div className="space-y-4">
                   <div className="bg-white rounded-lg p-6">
-                    <p className="text-4xl font-bold text-primary-600 mb-2">30+</p>
+                    <p className="text-4xl font-bold text-primary-600 mb-2">50+</p>
                     <p className="text-gray-700 font-medium">Cities & Communities</p>
                   </div>
                   <div className="bg-white rounded-lg p-6">
-                    <p className="text-4xl font-bold text-primary-600 mb-2">15</p>
+                    <p className="text-4xl font-bold text-primary-600 mb-2">30</p>
                     <p className="text-gray-700 font-medium">Mile Service Radius</p>
                   </div>
                   <div className="bg-white rounded-lg p-6">

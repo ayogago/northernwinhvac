@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import QuickQuoteForm from '@/components/QuickQuoteForm';
 
 export default function Home() {
   return (
@@ -152,74 +153,7 @@ export default function Home() {
                   <p className="text-gray-600">Fill out the form below and we'll get back to you within 1 hour!</p>
                 </div>
 
-                <form className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Name *</label>
-                    <input
-                      type="text"
-                      required
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                      placeholder="John Smith"
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Phone *</label>
-                      <input
-                        type="tel"
-                        required
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                        placeholder="(818) 555-1234"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Email *</label>
-                      <input
-                        type="email"
-                        required
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                        placeholder="john@email.com"
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Service Needed *</label>
-                    <select
-                      required
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white"
-                    >
-                      <option value="">Select a service</option>
-                      <option value="ac-repair">AC Repair</option>
-                      <option value="ac-installation">AC Installation</option>
-                      <option value="heating-repair">Heating Repair</option>
-                      <option value="heating-installation">Heating Installation</option>
-                      <option value="maintenance">Maintenance</option>
-                      <option value="emergency">Emergency Service</option>
-                    </select>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Message</label>
-                    <textarea
-                      rows={3}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent resize-none"
-                      placeholder="Tell us about your HVAC needs..."
-                    />
-                  </div>
-
-                  <button
-                    type="submit"
-                    className="w-full bg-secondary-500 hover:bg-secondary-600 text-white px-8 py-4 rounded-lg text-lg font-bold transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
-                  >
-                    Get My Free Quote Now
-                  </button>
-
-                  <p className="text-xs text-gray-500 text-center">
-                    We respect your privacy. Your information is secure and will never be shared.
-                  </p>
-                </form>
+<QuickQuoteForm />
 
                 {/* Trust Badges */}
                 <div className="mt-6 pt-6 border-t border-gray-200">
@@ -454,37 +388,52 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
-            <div className="text-center p-6 bg-primary-50 rounded-lg hover:bg-primary-100 transition-colors duration-200">
-              <svg className="w-8 h-8 text-primary-600 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 max-w-5xl mx-auto">
+            <div className="text-center p-4 bg-primary-50 rounded-lg hover:bg-primary-100 transition-colors duration-200">
+              <svg className="w-6 h-6 text-primary-600 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>
-              <h3 className="font-semibold text-gray-900">Glendale</h3>
+              <h3 className="font-semibold text-gray-900 text-sm">Glendale</h3>
             </div>
 
-            <div className="text-center p-6 bg-primary-50 rounded-lg hover:bg-primary-100 transition-colors duration-200">
-              <svg className="w-8 h-8 text-primary-600 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="text-center p-4 bg-primary-50 rounded-lg hover:bg-primary-100 transition-colors duration-200">
+              <svg className="w-6 h-6 text-primary-600 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>
-              <h3 className="font-semibold text-gray-900">Burbank</h3>
+              <h3 className="font-semibold text-gray-900 text-sm">Burbank</h3>
             </div>
 
-            <div className="text-center p-6 bg-primary-50 rounded-lg hover:bg-primary-100 transition-colors duration-200">
-              <svg className="w-8 h-8 text-primary-600 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="text-center p-4 bg-primary-50 rounded-lg hover:bg-primary-100 transition-colors duration-200">
+              <svg className="w-6 h-6 text-primary-600 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>
-              <h3 className="font-semibold text-gray-900">Tujunga</h3>
+              <h3 className="font-semibold text-gray-900 text-sm">Pasadena</h3>
             </div>
 
-            <div className="text-center p-6 bg-primary-50 rounded-lg hover:bg-primary-100 transition-colors duration-200">
-              <svg className="w-8 h-8 text-primary-600 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="text-center p-4 bg-primary-50 rounded-lg hover:bg-primary-100 transition-colors duration-200">
+              <svg className="w-6 h-6 text-primary-600 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>
-              <h3 className="font-semibold text-gray-900">Pasadena</h3>
+              <h3 className="font-semibold text-gray-900 text-sm">Los Angeles</h3>
+            </div>
+
+            <div className="text-center p-4 bg-primary-50 rounded-lg hover:bg-primary-100 transition-colors duration-200">
+              <svg className="w-6 h-6 text-primary-600 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+              <h3 className="font-semibold text-gray-900 text-sm">San Fernando Valley</h3>
+            </div>
+
+            <div className="text-center p-4 bg-secondary-50 rounded-lg hover:bg-secondary-100 transition-colors duration-200">
+              <svg className="w-6 h-6 text-secondary-600 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+              </svg>
+              <h3 className="font-semibold text-gray-900 text-sm">50+ More Areas</h3>
             </div>
           </div>
 
@@ -502,87 +451,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Testimonials Section */}
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              What Our Customers Say
-            </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Don't just take our word for it
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-white rounded-lg shadow-md p-8">
-              <div className="flex items-center mb-4">
-                {[...Array(5)].map((_, i) => (
-                  <svg key={i} className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                  </svg>
-                ))}
-              </div>
-              <p className="text-gray-600 mb-4">
-                "Outstanding service! They replaced our old AC unit with a new energy-efficient system. The technicians were professional, on time, and cleaned up perfectly after the job."
-              </p>
-              <div className="flex items-center">
-                <div className="bg-primary-600 rounded-full w-12 h-12 flex items-center justify-center text-white font-bold">
-                  JD
-                </div>
-                <div className="ml-3">
-                  <p className="font-semibold text-gray-900">Jessica Davis</p>
-                  <p className="text-sm text-gray-600">Glendale, CA</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white rounded-lg shadow-md p-8">
-              <div className="flex items-center mb-4">
-                {[...Array(5)].map((_, i) => (
-                  <svg key={i} className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                  </svg>
-                ))}
-              </div>
-              <p className="text-gray-600 mb-4">
-                "Had a furnace emergency on a cold winter night. They came out within an hour and got our heat back on. Highly recommend their emergency service!"
-              </p>
-              <div className="flex items-center">
-                <div className="bg-primary-600 rounded-full w-12 h-12 flex items-center justify-center text-white font-bold">
-                  MT
-                </div>
-                <div className="ml-3">
-                  <p className="font-semibold text-gray-900">Michael Thompson</p>
-                  <p className="text-sm text-gray-600">Burbank, CA</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white rounded-lg shadow-md p-8">
-              <div className="flex items-center mb-4">
-                {[...Array(5)].map((_, i) => (
-                  <svg key={i} className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                  </svg>
-                ))}
-              </div>
-              <p className="text-gray-600 mb-4">
-                "We've been using NorthernWindHVAC for our maintenance plan for 3 years. They're always punctual, thorough, and our energy bills have decreased significantly."
-              </p>
-              <div className="flex items-center">
-                <div className="bg-primary-600 rounded-full w-12 h-12 flex items-center justify-center text-white font-bold">
-                  SR
-                </div>
-                <div className="ml-3">
-                  <p className="font-semibold text-gray-900">Sarah Rodriguez</p>
-                  <p className="text-sm text-gray-600">Pasadena, CA</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* Final CTA Section */}
       <section className="py-20 bg-gradient-to-br from-primary-600 to-primary-800 text-white">
